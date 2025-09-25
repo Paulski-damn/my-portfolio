@@ -47,7 +47,6 @@ const Portfolio: React.FC = () => {
     { name: "JavaScript", level: 50, type: "frontend", logo: "/logos/javascript.svg" },
     { name: "HTML5", level: 80, type: "frontend", logo: "/logos/html5.svg" },
     { name: "CSS3", level: 70, type: "frontend", logo: "/logos/css.svg" },
-    { name: "Bootstrap", level: 50, type: "frontend", logo: "/logos/bootstrap.svg" },
 
     // Backend
     { name: "PHP", level: 80, type: "backend", logo: "/logos/php-logo.svg" },
@@ -192,7 +191,7 @@ const Portfolio: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center px-4">
+      <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-20 md:pt-0">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div
@@ -430,12 +429,19 @@ const Portfolio: React.FC = () => {
                 ? 'bg-gray-800/50 backdrop-blur-sm'
                 : 'bg-white shadow-lg border border-gray-100'
                 }`}>
-                <div className={`h-48 flex items-center justify-center transition-all duration-300 ${darkMode
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-700'
-                  }`}>
-                  <span className="text-4xl">🚀</span>
+                <div
+                  className={`h-48 flex items-center justify-center transition-all duration-300 ${darkMode
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-600"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-700"
+                    }`}
+                >
+                  <img
+                    src="/assets/vaxibloom.png"
+                    alt="Rocket"
+                    className="h-24 w-24 object-cover rounded-full"
+                  />
                 </div>
+
                 <div className="p-6">
                   <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'
                     }`}>{project.title}</h3>
