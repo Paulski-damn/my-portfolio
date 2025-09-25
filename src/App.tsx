@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Github, Linkedin, Mail, ExternalLink, ChevronDown, Moon, Sun } from 'lucide-react';
 import FormalPic from './assets/formalpic.jpg';
+import logoImg from './assets/logonb.png';
 
 interface Project {
   title: string;
@@ -43,7 +44,7 @@ const Portfolio: React.FC = () => {
     { name: "React", level: 40, type: "frontend", logo: "/logos/react.svg" },
     { name: "TypeScript", level: 40, type: "frontend", logo: "/logos/typescript.svg" },
     { name: "Tailwind CSS", level: 50, type: "frontend", logo: "/logos/tailwindcss.svg" },
-    { name: "JavaScript", level: 70, type: "frontend", logo: "/logos/javascript.svg" },
+    { name: "JavaScript", level: 50, type: "frontend", logo: "/logos/javascript.svg" },
     { name: "HTML5", level: 80, type: "frontend", logo: "/logos/html5.svg" },
     { name: "CSS3", level: 70, type: "frontend", logo: "/logos/css.svg" },
     { name: "Bootstrap", level: 50, type: "frontend", logo: "/logos/bootstrap.svg" },
@@ -100,13 +101,18 @@ const Portfolio: React.FC = () => {
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <span
-                className={`text-3xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'
+            <div className="flex items-center space-x-3">
+              {/* Your actual logo */}
+              <img
+                src={logoImg}
+                alt="PolCodes Logo"
+                className={`w-10 h-10 rounded-lg object-contain transition-all duration-300 ${darkMode ? 'brightness-110' : 'brightness-100'
                   }`}
-              >
-                {"{PolCodes}"}
-              </span>
+              />
+
+              {/* Brand Text */}
+              <span className={`text-2xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'
+                }`}>{"{PolCodes}"}</span>
             </div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4">
