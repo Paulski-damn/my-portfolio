@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Github, Linkedin, Mail, ExternalLink, ChevronDown, Moon, Sun } from 'lucide-react';
 import FormalPic from './assets/formalpic.jpg';
 import logoImg from './assets/logonb.png';
+import myPhoto from "./assets/vaxibloom.png";
+import aboutPhoto from "./assets/self.jpg";
 
 interface Project {
   title: string;
@@ -25,9 +27,9 @@ const Portfolio: React.FC = () => {
   // Sample data - replace with your own
   const projects: Project[] = [
     {
-      title: "Infant Health Immunization System",
-      description: "PHP/MySQL baby vaccine system with BHW scheduling, inventory, dose checks, barangay mapping, and admin dashboard.",
-      technologies: ["Bootstrap", "Vanilla-JavaScript", "PHP", "MySQL"],
+      title: "VaxiBloom",
+      description: "Infant immunization system with automatic age-based vaccine eligibility checks, BHW scheduling, and admin dashboard with inventory, dose checks, barangay mapping,.",
+      technologies: ["Bootstrap", "Vanilla-JavaScript", "Vanilla-PHP", "MySQL"],
       githubUrl: "https://github.com/Paulski-damn/Vaxibloom-php-app"
     },
   ];
@@ -213,11 +215,11 @@ const Portfolio: React.FC = () => {
             </h1>
             <p className={`text-xl md:text-2xl mb-8 transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'
               }`}>
-              Full Stack Developer
+              Web Developer
             </p>
             <p className={`text-lg mb-8 max-w-2xl mx-auto transition-colors duration-300 ${darkMode ? 'text-gray-400' : 'text-gray-500'
               }`}>
-              I create robust, scalable web applications with modern technologies.
+              I create robust, scalable web application with modern technologies.
               Passionate about clean code, system architecture, and building solutions that matter.
             </p>
           </div>
@@ -262,7 +264,7 @@ const Portfolio: React.FC = () => {
             <div className="space-y-6">
               <p className={`text-lg transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'
                 }`}>
-                Aspiring full-stack developer passionate about building web applications and learning modern technologies.
+                Aspiring web developer passionate about building web application and learning modern technologies.
                 I enjoy turning ideas into functional solutions and continuously growing my skills.
               </p>
               <p className={`text-lg transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'
@@ -275,13 +277,13 @@ const Portfolio: React.FC = () => {
                   ? 'bg-blue-600/20 text-blue-300'
                   : 'bg-blue-100 text-blue-700'
                   }`}>
-                  Problem Solver
+                  Effective Communicator
                 </span>
                 <span className={`px-3 py-1 rounded-full text-sm transition-colors duration-300 ${darkMode
                   ? 'bg-indigo-600/20 text-indigo-300'
                   : 'bg-indigo-100 text-indigo-700'
                   }`}>
-                  Team Player
+                  Collaborative
                 </span>
                 <span className={`px-3 py-1 rounded-full text-sm transition-colors duration-300 ${darkMode
                   ? 'bg-gray-600/20 text-gray-300'
@@ -292,11 +294,17 @@ const Portfolio: React.FC = () => {
               </div>
             </div>
             <div className="relative">
-              <div className={`w-full h-80 rounded-lg shadow-2xl flex items-center justify-center transition-all duration-300 ${darkMode
-                ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
-                : 'bg-gradient-to-r from-blue-600 to-indigo-700'
-                }`}>
-                <span className="text-6xl text-white">👨‍💻</span>
+              <div
+                className={`w-full h-80 rounded-lg shadow-2xl flex items-center justify-center transition-all duration-300 ${darkMode
+                  ? "bg-gray-900"
+                  : "bg-white"
+                  }`}
+              >
+                <img
+                  src={aboutPhoto}
+                  alt="Project Preview"
+                  className="w-full h-full object-cover rounded-lg"
+                />
               </div>
             </div>
           </div>
@@ -431,14 +439,14 @@ const Portfolio: React.FC = () => {
                 }`}>
                 <div
                   className={`h-48 flex items-center justify-center transition-all duration-300 ${darkMode
-                    ? "bg-gradient-to-r from-blue-500 to-indigo-600"
-                    : "bg-gradient-to-r from-blue-600 to-indigo-700"
+                    ? "bg-gray-900"
+                    : "bg-white"
                     }`}
                 >
                   <img
-                    src="/assets/vaxibloom.png"
+                    src={myPhoto}
                     alt="Rocket"
-                    className="h-24 w-24 object-cover rounded-full"
+                    className="w-full h-full object-contain rounded-lg transition-all duration-300 m-3"
                   />
                 </div>
 
