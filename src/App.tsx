@@ -113,7 +113,7 @@ const Portfolio: React.FC = () => {
 
               {/* Brand Text */}
               <span className={`text-2xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'
-                }`}>{"{PolCodes}"}</span>
+                }`}>{"{Paul}"}</span>
             </div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4">
@@ -546,7 +546,7 @@ const Portfolio: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <p className={`transition-colors duration-300 ${darkMode ? 'text-gray-400' : 'text-gray-600'
             }`}>
-            © 2025 PolCodes. Built with React, TypeScript, and Tailwind CSS.
+            © 2025 Paul Andrei Ramos.
           </p>
         </div>
       </footer>
