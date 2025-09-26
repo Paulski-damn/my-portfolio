@@ -37,14 +37,12 @@ const Portfolio: React.FC = () => {
   interface Skill {
     name: string;
     level: number;
-    type: "frontend" | "backend";
+    type: "frontend" | "backend" | "database" | "DevOps_Tools";
     logo: string; // path to local logo
   }
 
   const skills: Skill[] = [
     // Frontend
-    { name: "React", level: 40, type: "frontend", logo: "/logos/react.svg" },
-    { name: "TypeScript", level: 40, type: "frontend", logo: "/logos/typescript.svg" },
     { name: "Tailwind CSS", level: 50, type: "frontend", logo: "/logos/tailwindcss.svg" },
     { name: "JavaScript", level: 50, type: "frontend", logo: "/logos/javascript.svg" },
     { name: "HTML5", level: 80, type: "frontend", logo: "/logos/html5.svg" },
@@ -53,7 +51,14 @@ const Portfolio: React.FC = () => {
     // Backend
     { name: "PHP", level: 80, type: "backend", logo: "/logos/php-logo.svg" },
     { name: "Laravel", level: 50, type: "backend", logo: "/logos/laravel.svg" },
-    { name: "MySQL", level: 80, type: "backend", logo: "/logos/mysql.svg" },
+
+    // Database
+    { name: "MySQL", level: 80, type: "database", logo: "/logos/mysql.svg" },
+
+    // DevOps & Tools
+    { name: "Git", level: 60, type: "DevOps_Tools", logo: "/logos/git.svg" },
+    { name: "GitHub", level: 50, type: "DevOps_Tools", logo: "/logos/github.svg" },
+    { name: "XAMPP", level: 80, type: "DevOps_Tools", logo: "/logos/xampp.svg" },
   ];
 
 
@@ -388,6 +393,110 @@ const Portfolio: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {skills
               .filter((s) => s.type === "backend")
+              .map((skill) => (
+                <div key={skill.name} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={skill.logo}
+                        alt={skill.name}
+                        className={`w-6 h-6 object-contain transition-all duration-300 ${darkMode ? "filter invert" : ""
+                          }`}
+                      />
+                      <span
+                        className={`font-medium transition-colors duration-300 ${darkMode ? "text-white" : "text-gray-900"
+                          }`}
+                      >
+                        {skill.name}
+                      </span>
+                    </div>
+                    <span
+                      className={`transition-colors duration-300 ${darkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                    >
+                      {skill.level}%
+                    </span>
+                  </div>
+                  <div
+                    className={`w-full rounded-full h-2 transition-colors duration-300 ${darkMode ? "bg-gray-700" : "bg-gray-200"
+                      }`}
+                  >
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          {/* Divider */}
+          <hr
+            className={`border-t-2 my-8 transition-colors duration-300 ${darkMode ? "border-gray-600" : "border-gray-300"
+              }`}
+          />
+
+          {/* Database */}
+          <h3
+            className={`text-2xl font-semibold mb-6 transition-colors duration-300 ${darkMode ? "text-white" : "text-gray-900"
+              }`}
+          >
+            Database
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {skills
+              .filter((s) => s.type === "database")
+              .map((skill) => (
+                <div key={skill.name} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={skill.logo}
+                        alt={skill.name}
+                        className={`w-6 h-6 object-contain transition-all duration-300 ${darkMode ? "filter invert" : ""
+                          }`}
+                      />
+                      <span
+                        className={`font-medium transition-colors duration-300 ${darkMode ? "text-white" : "text-gray-900"
+                          }`}
+                      >
+                        {skill.name}
+                      </span>
+                    </div>
+                    <span
+                      className={`transition-colors duration-300 ${darkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                    >
+                      {skill.level}%
+                    </span>
+                  </div>
+                  <div
+                    className={`w-full rounded-full h-2 transition-colors duration-300 ${darkMode ? "bg-gray-700" : "bg-gray-200"
+                      }`}
+                  >
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+          {/* Divider */}
+          <hr
+            className={`border-t-2 my-8 transition-colors duration-300 ${darkMode ? "border-gray-600" : "border-gray-300"
+              }`}
+          />
+          {/* DevOps & Tools */}
+          <h3
+            className={`text-2xl font-semibold mb-6 transition-colors duration-300 ${darkMode ? "text-white" : "text-gray-900"
+              }`}
+          >
+            DevOps & Tools
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {skills
+              .filter((s) => s.type === "DevOps_Tools")
               .map((skill) => (
                 <div key={skill.name} className="space-y-2">
                   <div className="flex justify-between items-center">
