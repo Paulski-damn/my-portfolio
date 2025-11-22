@@ -361,7 +361,7 @@ const Portfolio: React.FC = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5 px-4">
+      <section id="about" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className={`text-4xl md:text-5xl font-bold mb-4 transition-all duration-300 hover:scale-105 cursor-default ${darkMode ? 'text-white' : 'text-gray-900'
