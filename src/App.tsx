@@ -3,6 +3,8 @@ import { Menu, X, Github, Linkedin, Mail, ExternalLink, ChevronDown, Moon, Sun }
 import logoImg from './assets/logonb.png';
 import myPhoto from "./assets/vaxibloom.png";
 import aboutPhoto from "./assets/formalpic.jpg";
+import ResumeModal from "./ResumeModal";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Project {
   title: string;
@@ -11,6 +13,7 @@ interface Project {
   githubUrl?: string;
   liveUrl?: string;
   image?: string;
+  comingSoon?: boolean;
 }
 
 interface Skill {
@@ -39,6 +42,20 @@ const Portfolio: React.FC = () => {
       technologies: ["Bootstrap", "Vanilla-JavaScript", "Vanilla-PHP", "MySQL"],
       githubUrl: "https://github.com/Paulski-damn/Vaxibloom-php-app"
     },
+    {
+      title: 'Upcoming Project',
+      description: 'Wala pa nga ni, gagawa pa lang.',
+      technologies: ['Coming Soon'],
+      githubUrl: "",
+      comingSoon: true,
+    },
+    {
+      title: 'Future Idea',
+      description: 'Gagawa pa nga lang.',
+      technologies: ['Planning'],
+      githubUrl: "",
+      comingSoon: true,
+    }
   ];
 
   interface Skill {
@@ -66,7 +83,7 @@ const Portfolio: React.FC = () => {
     { name: "Git", type: "DevOps_Tools", logo: "/logos/git.svg" },
     { name: "GitHub", type: "DevOps_Tools", logo: "/logos/github.svg" },
     { name: "Vercel", type: "DevOps_Tools", logo: "/logos/vercel.svg" },
-    { name: "Infinity Free", type: "DevOps_Tools", logo: "/logos/xampp.svg" },
+    { name: "Infinity Free", type: "DevOps_Tools", logo: "/logos/infinityfree.svg" },
     { name: "XAMPP", type: "DevOps_Tools", logo: "/logos/xampp.svg" },
   ];
 
@@ -101,6 +118,7 @@ const Portfolio: React.FC = () => {
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   return (
     <div className={`min-h-screen transition-all duration-300 ${darkMode
@@ -122,10 +140,9 @@ const Portfolio: React.FC = () => {
                   }`}
               />
               <span
-                className={`text-2xl font-bold transition-all duration-300 hover:scale-105 hover:text-blue-500 cursor-pointer ${darkMode ? "text-white" : "text-gray-900"
-                  }`}
+                className={`font-bold tracking-tight cursor-pointer transition-colors duration-300 text-lg sm:text-xl md:text-2xl lg:text-3xl ${darkMode ? 'text-white' : 'text-gray-900'} hover:text-blue-500`}
               >
-                {"<Paul Ramos/>"}
+                {'<Paul Ramos/>'}
               </span>
             </a>
             {/* Desktop Navigation */}
@@ -145,6 +162,31 @@ const Portfolio: React.FC = () => {
                     {item}
                   </button>
                 ))}
+                <a
+                  href="/RESUME_RAMOS.pdf"
+                  download
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium capitalize transition-all duration-300 border ${darkMode
+                    ? 'text-gray-300 bg-gray-800 border-gray-700 hover:border-blue-500 hover:bg-gray-700 hover:text-white shadow-sm hover:shadow-md'
+                    : 'text-gray-700 bg-white border-gray-300 hover:border-blue-500 hover:bg-gray-50 hover:text-gray-900 shadow-sm hover:shadow-md'
+                    }`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"
+                    />
+                  </svg>
+
+                  <span>Resume</span>
+                </a>
               </div>
 
               {/* Dark Mode Toggle with enhanced hover */}
@@ -200,6 +242,31 @@ const Portfolio: React.FC = () => {
                   {item}
                 </button>
               ))}
+              <a
+                href="/RESUME_RAMOS.pdf"
+                download
+                className={`flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium capitalize transition-all duration-300 shadow-sm ${darkMode
+                  ? 'text-gray-300 bg-gray-800 hover:bg-gray-700 hover:text-white hover:shadow-md'
+                  : 'text-gray-600 bg-gray-50 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md'
+                  }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"
+                  />
+                </svg>
+
+                <span>Resume</span>
+              </a>
             </div>
           </div>
         )}
@@ -264,8 +331,8 @@ const Portfolio: React.FC = () => {
                 <a
                   href="https://github.com/Paulski-damn"
                   className={`p-3 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${darkMode
-                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white hover:shadow-lg hover:shadow-blue-500/30'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-900 hover:shadow-lg hover:shadow-blue-500/20'
+                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/30'
+                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/20'
                     }`}
                 >
                   <Github size={20} className="md:w-6 md:h-6" />
@@ -284,63 +351,12 @@ const Portfolio: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`p-3 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${darkMode
-                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-red-400 hover:shadow-lg hover:shadow-red-500/30'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-red-600 hover:shadow-lg hover:shadow-red-500/20'
+                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/30'
+                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/20'
                     }`}
                 >
                   <Mail size={20} className="md:w-6 md:h-6" />
                 </a>
-              </div>
-            </div>
-            {/* Right Side - Optional Code/Visual Element */}
-            <div className="hidden lg:block">
-              <div className={`rounded-2xl p-8 relative overflow-hidden ${darkMode
-                ? 'bg-gray-800/50 border border-gray-700'
-                : 'bg-white/80 border border-gray-200 shadow-2xl'
-                }`}>
-                {/* Code-like visual element */}
-                <div className="space-y-4">
-                  <div className="flex space-x-4">
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                  </div>
-                  <div className={`font-mono text-sm space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    <div>
-                      <span className="text-blue-400">const</span>
-                      <span className="text-green-400"> developer</span>
-                      <span className="text-gray-400"> = </span>
-                      <span className="text-yellow-400">{`{`}</span>
-                    </div>
-                    <div className="ml-4">
-                      <span className="text-purple-400">name</span>
-                      <span className="text-gray-400">: </span>
-                      <span className="text-green-400">"Paul Ramos"</span>
-                      <span className="text-gray-400">,</span>
-                    </div>
-                    <div className="ml-4">
-                      <span className="text-purple-400">role</span>
-                      <span className="text-gray-400">: </span>
-                      <span className="text-green-400">"Full Stack Developer"</span>
-                      <span className="text-gray-400">,</span>
-                    </div>
-                    <div className="ml-4">
-                      <span className="text-purple-400">passion</span>
-                      <span className="text-gray-400">: </span>
-                      <span className="text-green-400">"Creating amazing digital experiences"</span>
-                    </div>
-                    <div>
-                      <span className="text-yellow-400">{`}`}</span>
-                      <span className="text-gray-400">;</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-500/20 rounded-full animate-pulse"></div>
-                <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-purple-500/20 rounded-full animate-bounce"></div>
               </div>
             </div>
           </div>
@@ -648,68 +664,117 @@ const Portfolio: React.FC = () => {
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className={`text-4xl font-bold mb-12 text-center transition-all duration-300 hover:scale-105 hover:text-blue-600 cursor-default ${darkMode ? 'text-white' : 'text-gray-900'
-            }`}>Featured Projects</h2>
+          <h2
+            className={`text-4xl font-bold mb-12 text-center transition-colors duration-300 hover:text-blue-600 ${darkMode ? 'text-white' : 'text-gray-900'
+              }`}
+          >
+            Featured Projects
+          </h2>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
-              <div key={index} className={`rounded-lg overflow-hidden shadow-xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-4 hover:rotate-1 group cursor-pointer ${darkMode
-                ? 'bg-gray-800/50 backdrop-blur-sm hover:bg-gray-700/60'
-                : 'bg-white shadow-lg border border-gray-100 hover:shadow-2xl hover:shadow-blue-500/20'
-                }`}>
+              <div
+                key={index}
+                className={`rounded-xl transition-all duration-300
+            hover:shadow-xl hover:scale-105
+            ${darkMode
+                    ? 'bg-gray-800/80 border border-gray-700 hover:border-blue-500/50'
+                    : 'bg-white border border-gray-200 hover:border-blue-500/50'
+                  }`}
+              >
+                {/* Project Image / Placeholder */}
+                <div
+                  className={`relative h-48 overflow-hidden rounded-t-xl flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-white'
+                    }`}
+                >
+                  {project.comingSoon ? (
+                    <span
+                      className={`text-sm font-medium italic ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}
+                    >
+                      Wala pa nga ni, gagawa pa lang
+                    </span>
+                  ) : (
+                    <img
+                      src={project.image ?? myPhoto}
+                      alt={project.title}
+                      className="w-full h-full object-contain p-4"
+                    />
+                  )}
 
-                {/* Project Image with overlay effect */}
-                <div className={`h-48 flex items-center justify-center relative overflow-hidden ${darkMode ? "bg-gray-900" : "bg-white"}`}>
-                  <img
-                    src={myPhoto}
-                    alt="VaxiBloom Project"
-                    className="w-full h-full object-contain rounded-lg transition-all duration-500 m-3 group-hover:scale-110"
-                  />
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                      <div className="flex space-x-4">
-                        {project.githubUrl && (
-                          <Github className="text-white" size={24} />
-                        )}
-                        {project.liveUrl && (
-                          <ExternalLink className="text-white" size={24} />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  {/* Blue highlight line */}
+                  <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-blue-500 transition-all duration-300 hover:w-full" />
                 </div>
 
+                {/* Content */}
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-3 transition-all duration-300 group-hover:text-blue-500 group-hover:scale-105 ${darkMode ? 'text-white' : 'text-gray-900'
-                    }`}>{project.title}</h3>
-                  <p className={`mb-4 text-sm transition-all duration-300 group-hover:text-gray-800 ${darkMode ? 'text-gray-300 group-hover:text-gray-200' : 'text-gray-600'
-                    }`}>{project.description}</p>
+                  <h3
+                    className={`text-xl font-bold mb-3 transition-colors duration-300 hover:text-blue-500 ${darkMode ? 'text-white' : 'text-gray-900'
+                      }`}
+                  >
+                    {project.title}
+                    {project.comingSoon && (
+                      <span className="ml-2 text-xs bg-yellow-400/20 text-yellow-500 px-2 py-0.5 rounded">
+                        Coming Soon
+                      </span>
+                    )}
+                  </h3>
 
-                  {/* Technology tags with individual hover effects */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <p
+                    className={`mb-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'
+                      }`}
+                  >
+                    {project.description}
+                  </p>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-5">
                     {project.technologies.map((tech, i) => (
-                      <span key={i} className={`px-2 py-1 rounded text-xs transition-all duration-300 hover:scale-110 hover:rotate-2 hover:shadow-md cursor-default ${darkMode
-                        ? 'bg-blue-600/20 text-blue-300 hover:bg-blue-600/40'
-                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                        }`}>
+                      <span
+                        key={i}
+                        className={`px-2 py-1 text-xs rounded transition-colors duration-200 ${darkMode
+                          ? 'bg-blue-600/20 text-blue-300'
+                          : 'bg-blue-100 text-blue-700'
+                          }`}
+                      >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  {/* Action buttons with enhanced hover */}
+                  {/* Links */}
                   <div className="flex space-x-4">
-                    {project.githubUrl && (
-                      <a href={project.githubUrl} className={`transition-all duration-300 hover:scale-125 hover:-translate-y-1 hover:rotate-12 ${darkMode ? 'text-gray-400 hover:text-white hover:shadow-lg hover:shadow-white/50' : 'text-gray-600 hover:text-gray-900 hover:shadow-lg hover:shadow-gray-900/50'
-                        }`}>
+                    {!project.comingSoon && project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`transition-colors duration-200 hover:text-blue-500 ${darkMode ? 'text-gray-400' : 'text-gray-600'
+                          }`}
+                      >
                         <Github size={20} />
                       </a>
                     )}
-                    {project.liveUrl && (
-                      <a href={project.liveUrl} className={`transition-all duration-300 hover:scale-125 hover:-translate-y-1 hover:-rotate-12 ${darkMode ? 'text-gray-400 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/50' : 'text-gray-600 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/50'
-                        }`}>
+
+                    {!project.comingSoon && project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`transition-colors duration-200 hover:text-blue-500 ${darkMode ? 'text-gray-400' : 'text-gray-600'
+                          }`}
+                      >
                         <ExternalLink size={20} />
                       </a>
+                    )}
+
+                    {project.comingSoon && (
+                      <span
+                        className={`text-xs italic ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                          }`}
+                      >
+                        In progress
+                      </span>
                     )}
                   </div>
                 </div>
@@ -719,102 +784,208 @@ const Portfolio: React.FC = () => {
         </div>
       </section>
 
+
       {/* Contact Section */}
-      <section id="contact" className={`py-20 px-4 transition-all duration-300 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'
-        }`}>
+      <section
+        id="contact"
+        className={`py-20 px-4 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'
+          }`}
+      >
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className={`text-4xl font-bold mb-8 transition-all duration-300 hover:scale-105 hover:text-blue-600 cursor-default ${darkMode ? 'text-white' : 'text-gray-900'
-            }`}>Get In Touch</h2>
-          <p className={`text-xl mb-12 transition-all  ${darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-            I'm always open to discussing new opportunities, interesting projects, and collaboration.
+          <h2
+            className={`text-4xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'
+              }`}
+          >
+            Get In Touch
+          </h2>
+
+          <p
+            className={`text-lg mb-14 ${darkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}
+          >
+            I’m open to new opportunities, collaborations, and meaningful projects.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Email - Enhanced hover effects */}
+          {/* Contact Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-14">
+            {/* Email */}
             <a
               href="mailto:ramospauul@gmail.com"
-              className="space-y-4 block transition-all duration-500 transform hover:scale-110 hover:-translate-y-2 cursor-pointer group"
+              className={`rounded-xl p-6 border transition-all duration-300
+          hover:shadow-lg hover:-translate-y-1
+          ${darkMode
+                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
+                  : 'border-gray-200 bg-white hover:border-blue-500/50'
+                }`}
             >
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto hover:bg-blue-700 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-blue-500/50 group-hover:rotate-12">
-                <Mail className="text-white transition-all duration-300 group-hover:scale-125" size={24} />
-              </div>
-              <h3 className={`font-semibold transition-all duration-300 group-hover:text-blue-500 group-hover:scale-105 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              <Mail
+                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}
+                size={26}
+              />
+              <h3
+                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
+                  }`}
+              >
                 Email
               </h3>
-              <p className={`transition-all duration-300 group-hover:text-blue-600 group-hover:scale-105 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}
+              >
                 ramospauul@gmail.com
               </p>
-              {/* Floating animation elements */}
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-all duration-500"></div>
             </a>
 
-            {/* GitHub - Enhanced hover effects */}
+            {/* GitHub */}
             <a
               href="https://github.com/Paulski-damn"
               target="_blank"
               rel="noopener noreferrer"
-              className="space-y-4 block transition-all duration-500 transform hover:scale-110 hover:-translate-y-2 cursor-pointer group relative"
+              className={`rounded-xl p-6 border transition-all duration-300
+          hover:shadow-lg hover:-translate-y-1
+          ${darkMode
+                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
+                  : 'border-gray-200 bg-white hover:border-blue-500/50'
+                }`}
             >
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto hover:bg-blue-700 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-blue-500/50 group-hover:-rotate-12">
-                <Github className="text-white transition-all duration-300 group-hover:scale-125" size={24} />
-              </div>
-              <h3 className={`font-semibold transition-all duration-300 group-hover:text-blue-500 group-hover:scale-105 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              <Github
+                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}
+                size={26}
+              />
+              <h3
+                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
+                  }`}
+              >
                 GitHub
               </h3>
-              <p className={`transition-all duration-300 group-hover:text-blue-600 group-hover:scale-105 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}
+              >
                 Paulski-damn
               </p>
-              {/* Floating animation elements */}
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-green-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all duration-500"></div>
             </a>
 
-            {/* LinkedIn - Enhanced hover effects */}
+            {/* LinkedIn */}
             <a
               href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
               target="_blank"
               rel="noopener noreferrer"
-              className="space-y-4 block transition-all duration-500 transform hover:scale-110 hover:-translate-y-2 cursor-pointer group relative"
+              className={`rounded-xl p-6 border transition-all duration-300
+          hover:shadow-lg hover:-translate-y-1
+          ${darkMode
+                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
+                  : 'border-gray-200 bg-white hover:border-blue-500/50'
+                }`}
             >
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto hover:bg-blue-700 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-blue-500/50 group-hover:rotate-6">
-                <Linkedin className="text-white transition-all duration-300 group-hover:scale-125" size={24} />
-              </div>
-              <h3 className={`font-semibold transition-all duration-300 group-hover:text-blue-500 group-hover:scale-105 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              <Linkedin
+                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}
+                size={26}
+              />
+              <h3
+                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
+                  }`}
+              >
                 LinkedIn
               </h3>
-              <p className={`transition-all duration-300 group-hover:text-blue-600 group-hover:scale-105 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}
+              >
                 Paul Andrei Ramos
               </p>
-              {/* Floating animation elements */}
-              <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-indigo-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-all duration-500"></div>
             </a>
           </div>
 
-          {/* Enhanced CTA Button */}
+          {/* CTA */}
           <a
             href="https://mail.google.com/mail/?view=cm&to=ramospauul@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-1 active:scale-95 relative overflow-hidden group"
+            className="inline-flex items-center justify-center px-8 py-3 rounded-lg
+        bg-blue-600 text-white font-medium
+        transition-all duration-300
+        hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            <span className="relative z-10">Send Message</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-            {/* Sparkle effect */}
-            <div className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-all duration-300"></div>
+            Send Message
           </a>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={`py-8 px-4 border-t transition-all duration-300 ${darkMode ? 'border-gray-700' : 'border-gray-200'
-        }`}>
-        <div className="max-w-4xl mx-auto text-center">
-          <p className={`transition-all duration-300 hover:scale-105 hover:text-blue-500 cursor-default ${darkMode ? 'text-gray-400' : 'text-gray-600'
-            }`}>
-            © 2025 Paul Ramos. All rights reserved.
-          </p>
+
+      <footer
+        className={`bg-transparent border-t transition-colors duration-300
+    ${darkMode ? 'border-gray-700 bg-gray-900/30' : 'border-gray-200 bg-white/50'}
+  `}
+      >
+        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-0">
+
+          {/* Left: Branding */}
+          <div className="flex flex-col items-start">
+            <span className={`text-2xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              {"<Paul Ramos/>"}
+            </span>
+            <p className={`mt-2 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Full-Stack Developer | Portfolio & Projects
+            </p>
+          </div>
+
+          {/* Center: Quick Links */}
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+            {['About', 'Projects', 'Contact', 'Resume'].map((link) => (
+              <a
+                key={link}
+                href={link === 'Resume' ? '/RESUME_RAMOS.pdf' : `#${link.toLowerCase()}`}
+                download={link === 'Resume'}
+                className={`group relative text-sm font-medium transition-colors duration-300
+            ${darkMode ? 'text-gray-300 hover:text-blue-500' : 'text-gray-700 hover:text-blue-500'}
+          `}
+              >
+                {link}
+                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </div>
+
+          {/* Right: Social Icons */}
+          <div className="flex gap-4">
+            <a
+              href="https://github.com/Paulski-damn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+            >
+              <Github size={24} />
+            </a>
+            <a
+              href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+            >
+              <Linkedin size={24} />
+            </a>
+            <a
+              href="mailto:ramospauul@gmail.com"
+              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+            >
+              <Mail size={24} />
+            </a>
+          </div>
+
+        </div>
+
+        {/* Bottom copyright */}
+        <div className={`mt-8 text-center text-sm pb-4 ${darkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+          © {new Date().getFullYear()} Paul Ramos. All rights reserved.
         </div>
       </footer>
+
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </div>
   );
 };
