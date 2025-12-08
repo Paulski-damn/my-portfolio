@@ -1,993 +1,520 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Mail, ExternalLink, ChevronDown, Moon, Sun } from 'lucide-react';
-import logoImg from './assets/logonb.png';
-import myPhoto from "./assets/vaxibloom.png";
-import aboutPhoto from "./assets/formalpic.jpg";
-import ResumeModal from "./ResumeModal";
-import { motion, AnimatePresence } from "framer-motion";
-
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  image?: string;
-  comingSoon?: boolean;
-}
-
-interface Skill {
-  name: string;
-  level: number;
-}
+import { MapPin, Mail, ExternalLink, ChevronRight, BadgeCheck, Code2, Quote, ArrowUp, Layers, Coffee, FolderKanban, Circle, Award, Github, Linkedin, Send, Moon, Sun, Instagram, Download } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
-  const [darkMode, setDarkMode] = useState(() => {
-    // Check for saved theme preference or default to dark mode
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('darkMode');
-      return saved !== null ? JSON.parse(saved) : true;
-    }
-    return true; // Default to dark mode
-  });
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
+  // Typing effect for role
+  const roles = ["Junior Full-Stack Developer", "Computer Science Graduate"];
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [displayedRole, setDisplayedRole] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Sample data - replace with your own
-  const projects: Project[] = [
-    {
-      title: "VaxiBloom",
-      description: "Infant immunization system with automatic age-based vaccine eligibility checks, BHW scheduling, and admin dashboard with inventory, dose checks, barangay mapping,.",
-      technologies: ["Bootstrap", "Vanilla-JavaScript", "Vanilla-PHP", "MySQL"],
-      githubUrl: "https://github.com/Paulski-damn/Vaxibloom-php-app"
-    },
-    {
-      title: 'Upcoming Project',
-      description: 'Wala pa nga ni, gagawa pa lang.',
-      technologies: ['Coming Soon'],
-      githubUrl: "",
-      comingSoon: true,
-    },
-    {
-      title: 'Future Idea',
-      description: 'Gagawa pa nga lang.',
-      technologies: ['Planning'],
-      githubUrl: "",
-      comingSoon: true,
-    }
-  ];
-
-  interface Skill {
-    name: string;
-    type: "frontend" | "backend" | "database" | "DevOps_Tools";
-    logo: string;
-  }
-
-  const skills: Skill[] = [
-    // Frontend
-    { name: "Bootstrap", type: "frontend", logo: "/logos/bootstrap.svg" },
-    { name: "Tailwind CSS", type: "frontend", logo: "/logos/tailwindcss.svg" },
-    { name: "JavaScript", type: "frontend", logo: "/logos/javascript.svg" },
-    { name: "HTML5", type: "frontend", logo: "/logos/html5.svg" },
-    { name: "CSS3", type: "frontend", logo: "/logos/css.svg" },
-
-    // Backend
-    { name: "PHP", type: "backend", logo: "/logos/php-logo.svg" },
-    { name: "Laravel", type: "backend", logo: "/logos/laravel.svg" },
-
-    // Database
-    { name: "MySQL", type: "database", logo: "/logos/mysql.svg" },
-
-    // DevOps & Tools
-    { name: "Git", type: "DevOps_Tools", logo: "/logos/git.svg" },
-    { name: "GitHub", type: "DevOps_Tools", logo: "/logos/github.svg" },
-    { name: "Vercel", type: "DevOps_Tools", logo: "/logos/vercel.svg" },
-    { name: "Infinity Free", type: "DevOps_Tools", logo: "/logos/infinityfree.svg" },
-    { name: "XAMPP", type: "DevOps_Tools", logo: "/logos/xampp.svg" },
-  ];
+  useEffect(() => {
+    const currentRole = roles[currentRoleIndex];
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (displayedRole.length < currentRole.length) {
+          setDisplayedRole(currentRole.slice(0, displayedRole.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        if (displayedRole.length > 0) {
+          setDisplayedRole(currentRole.slice(0, displayedRole.length - 1));
+        } else {
+          setIsDeleting(false);
+          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+        }
+      }
+    }, isDeleting ? 50 : 100);
+    return () => clearTimeout(timeout);
+  }, [displayedRole, isDeleting, currentRoleIndex]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      if (current) {
-        setActiveSection(current);
-      }
+      setShowScrollTop(window.scrollY > 400);
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMenuOpen(false);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+  const experiences = [
+    { title: "Junior Full-Stack Developer", company: "QX Information Technology Corp.", year: "2025", current: true },
+    { title: "IT Intern", company: "Cavite Community Academy Inc.", year: "2024" }
+  ];
+
+  const techStack = {
+    Frontend: ["JavaScript", "HTML5", "CSS3", "Bootstrap", "Tailwind CSS"],
+    Backend: ["PHP", "Laravel", "MySQL"],
+    "DevOps & Tools": ["Git", "GitHub", "Vercel", "XAMPP"],
   };
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  const projects = [
+    {
+      title: "VaxiBloom",
+      description: "Infant immunization system with scheduling",
+      link: "https://github.com/Paulski-damn/Vaxibloom-php-app",
+      linkText: "github.com/Paulski-damn",
+    },
+    {
+      title: "Upcoming Project",
+      description: "New project in development",
+      link: "#",
+      linkText: "Coming Soon",
+    },
+  ];
+
+  const certifications = [
+    { title: "To Follow", issuer: "To Follow" },
+  ];
 
   return (
-    <div className={`min-h-screen transition-all duration-300 ${darkMode
-      ? 'bg-gradient-to-br from-gray-900 via-slate-900 to-black'
-      : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'
+    <div className={`min-h-screen flex flex-col relative transition-colors duration-300 ${darkMode ? 'bg-[#0a0a0a] text-white' : 'bg-gray-50 text-gray-900'
       }`}>
-      {/* Navigation */}
-      <nav className={`fixed w-full z-50 backdrop-blur-sm border-b transition-all duration-300 ${darkMode
-        ? 'bg-gray-900/90 border-gray-700'
-        : 'bg-white/90 border-gray-200'
-        }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center space-x-3">
-              <img
-                src={logoImg}
-                alt="PolCodes Logo"
-                className={`w-10 h-10 rounded-lg object-contain transition-all duration-300 hover:rotate-12 hover:scale-110 ${darkMode ? "brightness-110" : "brightness-100"
-                  }`}
-              />
-              <span
-                className={`font-bold tracking-tight cursor-pointer transition-colors duration-300 text-lg sm:text-xl md:text-2xl lg:text-3xl ${darkMode ? 'text-white' : 'text-gray-900'} hover:text-blue-500`}
-              >
-                {'<Paul Ramos/>'}
-              </span>
-            </a>
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="flex items-baseline space-x-4">
-                {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium capitalize transition-all duration-300 hover:scale-110 hover:shadow-md ${activeSection === item
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : darkMode
-                        ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                      }`}
-                  >
-                    {item}
-                  </button>
-                ))}
-                <a
-                  href="/RESUME_RAMOS.pdf"
-                  download
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium capitalize transition-all duration-300 border ${darkMode
-                    ? 'text-gray-300 bg-gray-800 border-gray-700 hover:border-blue-500 hover:bg-gray-700 hover:text-white shadow-sm hover:shadow-md'
-                    : 'text-gray-700 bg-white border-gray-300 hover:border-blue-500 hover:bg-gray-50 hover:text-gray-900 shadow-sm hover:shadow-md'
+      {/* Subtle dot pattern background */}
+      <div
+        className="fixed inset-0 opacity-30 pointer-events-none"
+        style={{
+          backgroundImage: darkMode
+            ? 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)'
+            : 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.1) 1px, transparent 0)',
+          backgroundSize: '24px 24px'
+        }}
+      />
+
+      <main className="flex-1 max-w-4xl mx-auto w-full py-8 px-4 sm:px-6 relative z-10">
+        {/* Hero Section */}
+        <section className="mb-8">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+            {/* Profile Photo with glow effect */}
+            <div className="flex-shrink-0 relative group">
+              <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${darkMode ? 'bg-gradient-to-br from-white/10 via-transparent to-white/10' : 'bg-gradient-to-br from-gray-400/20 via-transparent to-gray-400/20'
+                }`} />
+              <div className={`relative w-40 h-40 md:w-44 md:h-44 rounded-2xl overflow-hidden ring-2 ${darkMode ? 'ring-white/10' : 'ring-gray-300'
+                }`}>
+                <img
+                  src="/formalpic.jpg"
+                  alt="Paul Andrei Ramos"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="flex-1">
+              {/* Name row with theme toggle */}
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-3xl md:text-4xl font-bold">Paul Ramos</h1>
+                  <BadgeCheck className="h-6 w-6 fill-blue-500 text-white" />
+                </div>
+
+                {/* Theme Toggle Switch */}
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className={`relative w-14 h-7 rounded-full transition-colors ${darkMode ? 'bg-white/20' : 'bg-gray-300'
                     }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"
-                    />
-                  </svg>
-
-                  <span>Resume</span>
-                </a>
+                  <div className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-all duration-300 flex items-center justify-center ${darkMode ? 'translate-x-7 bg-white' : 'translate-x-0 bg-gray-900'
+                    }`}>
+                    {darkMode ? <Moon className="h-3 w-3 text-gray-900" /> : <Sun className="h-3 w-3 text-white" />}
+                  </div>
+                </button>
               </div>
 
-              {/* Dark Mode Toggle with enhanced hover */}
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-md transition-all duration-300 hover:scale-125 hover:rotate-180 ${darkMode
-                  ? 'text-gray-300 hover:bg-gray-700 hover:text-yellow-400'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
-                  }`}
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </div>
+              <div className={`flex items-center gap-2 text-sm mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                <MapPin className="h-4 w-4" />
+                <span>Cavite, Philippines</span>
+              </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-md transition-all duration-300 hover:scale-125 hover:rotate-180 ${darkMode
-                  ? 'text-gray-300 hover:text-yellow-400'
-                  : 'text-gray-600 hover:text-blue-600'
-                  }`}
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={`transition-all duration-300 focus:outline-none hover:scale-110 ${darkMode
-                  ? 'text-gray-400 hover:text-white'
-                  : 'text-gray-600 hover:text-gray-900'
-                  }`}
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 ${darkMode ? 'bg-gray-800' : 'bg-white border-t border-gray-200'
-              }`}>
-              {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium capitalize transition-all duration-300 hover:scale-105 hover:pl-6 ${darkMode
-                    ? 'text-gray-300 hover:text-white hover:bg-gray-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
-                >
-                  {item}
-                </button>
-              ))}
-              <a
-                href="/RESUME_RAMOS.pdf"
-                download
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium capitalize transition-all duration-300 shadow-sm ${darkMode
-                  ? 'text-gray-300 bg-gray-800 hover:bg-gray-700 hover:text-white hover:shadow-md'
-                  : 'text-gray-600 bg-gray-50 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md'
-                  }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"
-                  />
-                </svg>
-
-                <span>Resume</span>
-              </a>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center px-4 pt-16 md:pt-0">
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="text-left">
-              {/* Greeting */}
-              <div className="mb-4">
-                <p className={`text-xl md:text-2xl font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                  Hi, I'm
+              {/* Typing effect for role */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Web Developer</span>
+                  <span className="mx-2">\</span>
+                  <span className={darkMode ? 'text-white/70' : 'text-gray-700'}>
+                    {displayedRole}
+                    <span className="animate-pulse">|</span>
+                  </span>
                 </p>
               </div>
 
-              {/* Name with enhanced gradient */}
-              <h1 className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight cursor-default ${darkMode
-                ? 'text-white'
-                : 'text-gray-900'
-                }`}>
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  Paul Andrei Ramos
-                </span>
-              </h1>
-              {/* Description */}
-              <p className={`text-base md:text-lg lg:text-xl mb-8 leading-relaxed max-w-2xl ${darkMode
-                ? 'text-gray-300'
-                : 'text-gray-600'
-                }`}>
-                A passionate <span className={`font-semibold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>Computer Science graduate</span> specializing in
-                building modern, scalable web applications. I transform ideas into functional, user-friendly digital
-                experiences using cutting-edge technologies.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button
-                  onClick={() => scrollToSection('projects')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 relative overflow-hidden group"
-                >
-                  <span className="relative z-10">View My Projects</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                </button>
-
-                <button
-                  onClick={() => scrollToSection('contact')}
-                  className={`border-2 px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl relative overflow-hidden group ${darkMode
-                    ? 'border-gray-600 text-gray-300 hover:border-blue-500 hover:text-white'
-                    : 'border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600'
-                    }`}
-                >
-                  <span className="relative z-10">Get In Touch</span>
-                  <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent transform -skew-x-12 transition-all duration-500 group-hover:translate-x-full`}></div>
-                </button>
-              </div>
-
-              {/* Social links */}
-              <div className="flex space-x-4 md:space-x-6">
+              <div className="flex flex-wrap items-center gap-3">
                 <a
-                  href="https://github.com/Paulski-damn"
-                  className={`p-3 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${darkMode
-                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/30'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/20'
+                  href="mailto:ramospauul@gmail.com"
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${darkMode
+                    ? 'bg-white text-black hover:bg-gray-200'
+                    : 'bg-gray-900 text-white hover:bg-gray-800'
                     }`}
                 >
-                  <Github size={20} className="md:w-6 md:h-6" />
+                  <Mail className="h-4 w-4" />
+                  Send an Email
+                  <ChevronRight className="h-4 w-4" />
                 </a>
+
                 <a
                   href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
-                  className={`p-3 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${darkMode
-                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/30'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/20'
-                    }`}
-                >
-                  <Linkedin size={20} className="md:w-6 md:h-6" />
-                </a>
-                <a
-                  href="https://mail.google.com/mail/?view=cm&to=ramospauul@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-3 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${darkMode
-                    ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-blue-400 hover:shadow-lg hover:shadow-blue-500/30'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-blue-600 hover:shadow-lg hover:shadow-blue-500/20'
+                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all flex items-center gap-2 ${darkMode
+                    ? 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                    : 'border-gray-300 hover:border-gray-400 hover:bg-gray-100'
                     }`}
                 >
-                  <Mail size={20} className="md:w-6 md:h-6" />
+                  <Linkedin className="h-4 w-4" />
+                  Connect
+                </a>
+
+                <a
+                  href="/RESUME_RAMOS.pdf"
+                  download
+                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all flex items-center gap-2 ${darkMode
+                    ? 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                    : 'border-gray-300 hover:border-gray-400 hover:bg-gray-100'
+                    }`}
+                >
+                  <Download className="h-4 w-4" />
+                  Resume
                 </a>
               </div>
             </div>
           </div>
+        </section>
 
 
-          {/* Scroll indicator */}
-          <div className="mt-12 lg:mt-16 text-center animate-bounce">
-            <ChevronDown
-              size={28}
-              className={`mx-auto transition-all duration-300 hover:scale-125 hover:text-blue-500 cursor-pointer ${darkMode
-                ? 'text-gray-400'
-                : 'text-gray-500'
-                }`}
-              onClick={() => scrollToSection('about')}
-            />
+
+        {/* Two Column Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          {/* Left Column - 3/5 */}
+          <div className="lg:col-span-3 space-y-4">
+            {/* About Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                About
+              </h2>
+              <div className={`space-y-3 text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p>
+                  I'm a Junior Full-Stack Developer passionate about building modern web applications. My journey in technology is driven by a commitment to solving real-world problems through clean, efficient code and user-centered design, specializing in{" "}
+                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>JavaScript</span>,{" "}
+                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Laravel</span>, and{" "}
+                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>MySQL</span>{" "}
+                  database technologies.
+                </p>
+                <p>
+                  My experience includes developing full-stack applications like VaxiBloom, an infant immunization system that demonstrates my ability to handle complex data management, user authentication, and responsive interface design using modern technologies.
+                </p>
+                <p>
+                  I believe in continuous learning and staying updated with industry trends. When I’m not coding, I explore new technologies, contribute to open-source projects, and refine my skills to deliver exceptional digital solutions.
+                </p>
+              </div>
+            </div>
+
+            {/* Tech Stack Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="flex items-center gap-2 text-lg font-semibold">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                  Tech Stack
+                </h2>
+              </div>
+              <div className="space-y-4">
+                {Object.entries(techStack).map(([category, skills]) => (
+                  <div key={category}>
+                    <p className={`text-xs font-medium mb-2 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{category}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className={`px-2 py-0.5 text-xs rounded-md ${darkMode
+                            ? 'bg-white/5 border border-white/10'
+                            : 'bg-gray-900/5 border border-gray-900/10'
+                            }`}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Beyond Coding Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                Beyond Coding
+              </h2>
+              <div className={`space-y-2 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p>
+                  When not writing code, I focus on learning about emerging technologies,
+                  exploring new frameworks, and staying updated with industry trends.
+                </p>
+                <p>
+                  I share my knowledge through building projects and continuous self-improvement.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - 2/5 */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Achievement Banner */}
+            <div className="rounded-xl overflow-hidden">
+              <div className={`relative p-5 overflow-hidden ${darkMode ? 'bg-white text-black' : 'bg-gray-900 text-white'
+                }`}>
+                <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-1/2 translate-x-1/2 ${darkMode ? 'bg-black/5' : 'bg-white/5'
+                  }`} />
+                <div className={`absolute bottom-0 left-0 w-20 h-20 rounded-full translate-y-1/2 -translate-x-1/2 ${darkMode ? 'bg-black/5' : 'bg-white/5'
+                  }`} />
+
+                <p className="text-xs font-medium opacity-90 relative z-10">🎓 GRADUATE</p>
+                <p className="text-2xl font-bold relative z-10">CLASS OF 2025</p>
+                <p className="text-xs opacity-80 relative z-10 mt-1">Cavite State University - Naic</p>
+                <p className="text-xs opacity-60 relative z-10">Bachelor of Science in Computer Science</p>
+              </div>
+            </div>
+
+            {/* Experience Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                <svg className="w-4 h-4 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Experience
+              </h2>
+              <div className="space-y-0">
+                {experiences.map((exp, index) => (
+                  <div key={index} className="flex items-start gap-3 group relative">
+                    {/* Connecting line */}
+                    {index !== experiences.length - 1 && (
+                      <div className={`absolute left-[3px] top-6 w-[2px] h-full ${darkMode ? 'bg-white/10' : 'bg-gray-200'
+                        }`} />
+                    )}
+
+                    <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 transition-colors relative z-10 ${exp.current
+                      ? darkMode
+                        ? 'bg-white ring-4 ring-white/10'
+                        : 'bg-gray-900 ring-4 ring-gray-900/10'
+                      : darkMode
+                        ? 'bg-gray-700 group-hover:bg-white/50'
+                        : 'bg-gray-300 group-hover:bg-gray-500'
+                      }`} />
+                    <div className="flex-1 min-w-0 pb-4">
+                      <p className="text-sm font-medium leading-tight">{exp.title}</p>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{exp.company}</p>
+                    </div>
+                    <span className={`text-xs flex-shrink-0 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{exp.year}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent Certifications Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="flex items-center gap-2 text-lg font-semibold">
+                  <Award className="h-4 w-4 -ml-1" /> Certifications
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {certifications.map((cert, index) => (
+                  <div key={index} className={`py-2 border-b last:border-0 ${darkMode ? 'border-white/10' : 'border-gray-200'
+                    }`}>
+                    <p className="text-sm font-medium">{cert.title}</p>
+                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{cert.issuer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent Projects Card */}
+            <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+              ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+              : 'bg-white border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="flex items-center gap-2 text-lg font-semibold">
+                  <FolderKanban className="h-4 w-4" /> Recent Projects
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {projects.map((project) => (
+                  <a
+                    key={project.title}
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block p-3 rounded-lg border transition-all group ${darkMode
+                      ? 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      }`}
+                  >
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-sm font-semibold group-hover:text-purple-400 transition-colors">
+                        {project.title}
+                      </span>
+                      <ExternalLink className={`h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`} />
+                    </div>
+                    <p className={`text-xs mb-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{project.description}</p>
+                    <span className={`text-xs group-hover:text-purple-400 transition-colors ${darkMode ? 'text-gray-500' : 'text-gray-500'
+                      }`}>{project.linkText}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className={`text-4xl md:text-5xl font-bold mb-4 transition-all duration-300 hover:scale-105 cursor-default ${darkMode ? 'text-white' : 'text-gray-900'
-              }`}>
-              About <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Me</span>
+        {/* Contact Section */}
+        <section id="contact" className="mt-4">
+          <div className={`p-6 rounded-2xl border transition-colors ${darkMode
+            ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
+            : 'bg-white border-gray-200 hover:border-gray-300'
+            }`}>
+            <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+              <Send className="h-4 w-4" /> Get in Touch
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto mb-6 rounded-full"></div>
-            <p className={`text-xl max-w-2xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-              Passionate developer dedicated to crafting innovative digital solutions
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Image Section - Left Side */}
-            <div className="relative group">
-              <div className={`relative rounded-2xl overflow-hidden shadow-2xl ${darkMode
-                ? 'bg-gradient-to-br from-gray-800 to-gray-900'
-                : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-                }`}>
-                <img
-                  src={aboutPhoto}
-                  alt="Paul Andrei Ramos - Web Developer"
-                  className="w-full h-auto object-cover rounded-2xl transform transition-all duration-500 group-hover:scale-105"
-                />
-
-                {/* Professional overlay elements */}
-                <div className={`absolute inset-0 bg-gradient-to-t ${darkMode
-                  ? 'from-gray-900/80 to-transparent'
-                  : 'from-white/60 to-transparent'
-                  } opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-6`}>
-                  <span className={`text-sm font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Full-Stack Developer
-                  </span>
-                </div>
-              </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -left-4 w-8 h-8 border-2 border-blue-500 rounded-lg opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-all duration-500 delay-200"></div>
-              <div className="absolute -bottom-4 -right-4 w-6 h-6 border-2 border-indigo-500 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all duration-500 delay-300"></div>
-            </div>
-
-            {/* Text Content - Right Side */}
-            <div className="space-y-6">
-              <div>
-                <h3 className={`text-2xl md:text-3xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                  Crafting Digital Experiences <span className="text-blue-500">That Matter</span>
-                </h3>
-
-                <div className="space-y-4">
-                  <p className={`text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    I'm a Paul Andrei Ramos, a recent gradute with a <span className="font-semibold text-blue-500">Bachelor of Science in Computer Science </span>. My journey in technology is driven by a commitment to solving real-world problems through clean, efficient code and user-centered design.
-                  </p>
-
-                  <p className={`text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    My experience includes developing full-stack applications like <span className="font-semibold text-blue-500">VaxiBloom</span>, an infant immunization system that showcases my ability to handle complex data management, user authentication, and responsive interface design using modern technologies.
-                  </p>
-
-                  <p className={`text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    I believe in continuous learning and staying updated with industry trends. When I'm not coding, I'm exploring new technologies, contributing to open-source projects, and refining my skills to deliver exceptional digital solutions.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section
-        id="skills"
-        className={`py-20 px-4 transition-all duration-300 ${darkMode ? "bg-gray-800/50" : "bg-gray-50"
-          }`}
-      >
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <h2 className={`text-4xl font-bold mb-4 transition-all duration-300 hover:scale-105 hover:text-blue-600 cursor-default ${darkMode ? "text-white" : "text-gray-900"
-              }`}>
-              My Skills
-            </h2>
-            <p className={`text-xl max-w-2xl mx-auto transition-all duration-300 ${darkMode ? "text-gray-300" : "text-gray-600"
-              }`}>
-              A combination of technical expertise and professional attributes that I bring to every project.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Technical Expertise */}
-            <div>
-              <h3 className={`text-2xl font-bold mb-8 text-center transition-all duration-300 hover:scale-105 hover:text-blue-500 cursor-default ${darkMode ? "text-white" : "text-gray-900"
-                }`}>
-                Technical Expertise
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Frontend Development */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50 hover:shadow-blue-500/20"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50 hover:shadow-blue-500/10"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Contact Info */}
+              <div className="space-y-3">
+                <div className={`p-4 rounded-lg border ${darkMode
+                  ? 'bg-white/5 border-white/10'
+                  : 'bg-gray-50 border-gray-200'
                   }`}>
-                  <div className="flex items-center mb-4">
-                    <h4 className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-                      Frontend Development
-                    </h4>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Mail className="w-4 h-4" />
+                    <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Email
+                    </p>
                   </div>
-                  <div className="space-y-2">
-                    {skills.filter(s => s.type === "frontend").map((skill) => (
-                      <div key={skill.name} className="flex items-center space-x-2 group cursor-default">
-                        <img
-                          src={skill.logo}
-                          alt={skill.name}
-                          className={`w-5 h-5 object-contain transition-all duration-300 group-hover:scale-125 ${darkMode ? "filter invert" : ""}`}
-                        />
-                        <span className={`text-sm transition-all duration-300 group-hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                          {skill.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <a
+                    href="mailto:ramospauul@gmail.com"
+                    className={`text-sm font-medium transition-colors ${darkMode ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'}`}
+                  >
+                    ramospauul@gmail.com
+                  </a>
                 </div>
 
-                {/* Backend Development */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50 hover:shadow-blue-500/20"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50 hover:shadow-blue-500/10"
+                <div className={`p-4 rounded-lg border ${darkMode
+                  ? 'bg-white/5 border-white/10'
+                  : 'bg-gray-50 border-gray-200'
                   }`}>
-                  <div className="flex items-center mb-4">
-                    <h4 className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-                      Backend Development
-                    </h4>
+                  <div className="flex items-center gap-2 mb-3">
+                    <ExternalLink className="w-4 h-4" />
+                    <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Social Links
+                    </p>
                   </div>
-                  <div className="space-y-2">
-                    {skills.filter(s => s.type === "backend").map((skill) => (
-                      <div key={skill.name} className="flex items-center space-x-2 group cursor-default">
-                        <img
-                          src={skill.logo}
-                          alt={skill.name}
-                          className={`w-5 h-5 object-contain transition-all duration-300 group-hover:scale-125 ${darkMode ? "filter invert" : ""}`}
-                        />
-                        <span className={`text-sm transition-all duration-300 group-hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                          {skill.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Database */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50 hover:shadow-blue-500/20"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50 hover:shadow-blue-500/10"
-                  }`}>
-                  <div className="flex items-center mb-4">
-                    <h4 className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-                      Database
-                    </h4>
-                  </div>
-                  <div className="space-y-2">
-                    {skills.filter(s => s.type === "database").map((skill) => (
-                      <div key={skill.name} className="flex items-center space-x-2 group cursor-default">
-                        <img
-                          src={skill.logo}
-                          alt={skill.name}
-                          className={`w-5 h-5 object-contain transition-all duration-300 group-hover:scale-125 ${darkMode ? "filter invert" : ""}`}
-                        />
-                        <span className={`text-sm transition-all duration-300 group-hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                          {skill.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* DevOps & Tools */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50 hover:shadow-blue-500/20"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50 hover:shadow-blue-500/10"
-                  }`}>
-                  <div className="flex items-center mb-4">
-                    <h4 className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-                      DevOps & Tools
-                    </h4>
-                  </div>
-                  <div className="space-y-2">
-                    {skills.filter(s => s.type === "DevOps_Tools").map((skill) => (
-                      <div key={skill.name} className="flex items-center space-x-2 group cursor-default">
-                        <img
-                          src={skill.logo}
-                          alt={skill.name}
-                          className={`w-5 h-5 object-contain transition-all duration-300 group-hover:scale-125 ${darkMode ? "filter invert" : ""}`}
-                        />
-                        <span className={`text-sm transition-all duration-300 group-hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                          {skill.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Professional Attributes */}
-            <div>
-              <h3 className={`text-2xl font-bold mb-8 text-center transition-all duration-300 hover:scale-105 hover:text-blue-500 cursor-default ${darkMode ? "text-white" : "text-gray-900"
-                }`}>
-                Professional Attributes
-              </h3>
-
-              <div className="space-y-6">
-                {/* Collaboration */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50"
-                  }`}>
-                  <div className="flex items-start space-x-4">
-                    <div>
-                      <h4 className={`font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                        Collaboration
-                      </h4>
-                      <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                        Strong team player with excellent communication skills and experience in cross-functional teams.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Goal-Oriented */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50"
-                  }`}>
-                  <div className="flex items-start space-x-4">
-                    <div>
-                      <h4 className={`font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                        Goal-Oriented
-                      </h4>
-                      <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                        Focused on delivering high-quality results while meeting project deadlines.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Problem Solving */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50"
-                  }`}>
-                  <div className="flex items-start space-x-4">
-                    <div>
-                      <h4 className={`font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                        Problem Solving
-                      </h4>
-                      <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                        Analytical thinker with a knack for finding efficient solutions to complex challenges.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fast Learner */}
-                <div className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl ${darkMode
-                  ? "bg-gray-800/80 border border-gray-700 hover:border-blue-500/50"
-                  : "bg-white border border-gray-200 hover:border-blue-500/50"
-                  }`}>
-                  <div className="flex items-start space-x-4">
-                    <div>
-                      <h4 className={`font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                        Fast Learner
-                      </h4>
-                      <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                        Quick to adapt to new technologies and methodologies, always eager to expand my knowledge.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2
-            className={`text-4xl font-bold mb-12 text-center transition-colors duration-300 hover:text-blue-600 ${darkMode ? 'text-white' : 'text-gray-900'
-              }`}
-          >
-            Featured Projects
-          </h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className={`rounded-xl transition-all duration-300
-            hover:shadow-xl hover:scale-105
-            ${darkMode
-                    ? 'bg-gray-800/80 border border-gray-700 hover:border-blue-500/50'
-                    : 'bg-white border border-gray-200 hover:border-blue-500/50'
-                  }`}
-              >
-                {/* Project Image / Placeholder */}
-                <div
-                  className={`relative h-48 overflow-hidden rounded-t-xl flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-white'
-                    }`}
-                >
-                  {project.comingSoon ? (
-                    <span
-                      className={`text-sm font-medium italic ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${darkMode
+                        ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                        : 'bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                         }`}
                     >
-                      Wala pa nga ni, gagawa pa lang
-                    </span>
-                  ) : (
-                    <img
-                      src={project.image ?? myPhoto}
-                      alt={project.title}
-                      className="w-full h-full object-contain p-4"
-                    />
-                  )}
-
-                  {/* Blue highlight line */}
-                  <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-blue-500 transition-all duration-300 hover:w-full" />
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3
-                    className={`text-xl font-bold mb-3 transition-colors duration-300 hover:text-blue-500 ${darkMode ? 'text-white' : 'text-gray-900'
-                      }`}
-                  >
-                    {project.title}
-                    {project.comingSoon && (
-                      <span className="ml-2 text-xs bg-yellow-400/20 text-yellow-500 px-2 py-0.5 rounded">
-                        Coming Soon
-                      </span>
-                    )}
-                  </h3>
-
-                  <p
-                    className={`mb-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'
-                      }`}
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {project.technologies.map((tech, i) => (
-                      <span
-                        key={i}
-                        className={`px-2 py-1 text-xs rounded transition-colors duration-200 ${darkMode
-                          ? 'bg-blue-600/20 text-blue-300'
-                          : 'bg-blue-100 text-blue-700'
-                          }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex space-x-4">
-                    {!project.comingSoon && project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`transition-colors duration-200 hover:text-blue-500 ${darkMode ? 'text-gray-400' : 'text-gray-600'
-                          }`}
-                      >
-                        <Github size={20} />
-                      </a>
-                    )}
-
-                    {!project.comingSoon && project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`transition-colors duration-200 hover:text-blue-500 ${darkMode ? 'text-gray-400' : 'text-gray-600'
-                          }`}
-                      >
-                        <ExternalLink size={20} />
-                      </a>
-                    )}
-
-                    {project.comingSoon && (
-                      <span
-                        className={`text-xs italic ${darkMode ? 'text-gray-400' : 'text-gray-500'
-                          }`}
-                      >
-                        In progress
-                      </span>
-                    )}
+                      <Linkedin className="w-4 h-4" />
+                      <span className="text-xs font-medium">LinkedIn</span>
+                    </a>
+                    <a
+                      href="https://github.com/Paulski-damn"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${darkMode
+                        ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                        : 'bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                        }`}
+                    >
+                      <Github className="w-4 h-4" />
+                      <span className="text-xs font-medium">GitHub</span>
+                    </a>
+                    <a
+                      href="https://www.instagram.com/paaul_ramoss/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${darkMode
+                        ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                        : 'bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                        }`}
+                    >
+                      <Instagram className="w-4 h-4" />
+                      <span className="text-xs font-medium">Instagram</span>
+                    </a>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* Availability */}
+              <div className={`p-4 rounded-lg border flex flex-col ${darkMode
+                ? 'bg-white/5 border-white/10'
+                : 'bg-gray-50 border-gray-200'
+                }`}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Circle className="w-4 h-4" />
+                  <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Availability
+                  </p>
+                </div>
+                <div className={`flex-1 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <p>
+                    I'm currently available for collaborations, freelance projects, and full-time opportunities.
+                    Let's build something amazing together!
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <a
+                    href="mailto:ramospauul@gmail.com"
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${darkMode
+                      ? 'bg-white text-black hover:bg-gray-200'
+                      : 'bg-gray-900 text-white hover:bg-gray-800'
+                      }`}
+                  >
+                    <Mail className="h-4 w-4" />
+                    Send me a message
+                    <ChevronRight className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-
-      {/* Contact Section */}
-      <section
-        id="contact"
-        className={`py-20 px-4 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'
-          }`}
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <h2
-            className={`text-4xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'
-              }`}
-          >
-            Get In Touch
-          </h2>
-
-          <p
-            className={`text-lg mb-14 ${darkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}
-          >
-            I’m open to new opportunities, collaborations, and meaningful projects.
+      {/* Footer */}
+      <footer className={`py-8 px-4 border-t ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
+        <div className="max-w-5xl mx-auto text-center">
+          <p className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-700'}`}>
+            © {new Date().getFullYear()} Paul Ramos. All rights reserved.
           </p>
-
-          {/* Contact Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-14">
-            {/* Email */}
-            <a
-              href="mailto:ramospauul@gmail.com"
-              className={`rounded-xl p-6 border transition-all duration-300
-          hover:shadow-lg hover:-translate-y-1
-          ${darkMode
-                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
-                  : 'border-gray-200 bg-white hover:border-blue-500/50'
-                }`}
-            >
-              <Mail
-                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                size={26}
-              />
-              <h3
-                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
-                  }`}
-              >
-                Email
-              </h3>
-              <p
-                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}
-              >
-                ramospauul@gmail.com
-              </p>
-            </a>
-
-            {/* GitHub */}
-            <a
-              href="https://github.com/Paulski-damn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`rounded-xl p-6 border transition-all duration-300
-          hover:shadow-lg hover:-translate-y-1
-          ${darkMode
-                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
-                  : 'border-gray-200 bg-white hover:border-blue-500/50'
-                }`}
-            >
-              <Github
-                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                size={26}
-              />
-              <h3
-                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
-                  }`}
-              >
-                GitHub
-              </h3>
-              <p
-                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}
-              >
-                Paulski-damn
-              </p>
-            </a>
-
-            {/* LinkedIn */}
-            <a
-              href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`rounded-xl p-6 border transition-all duration-300
-          hover:shadow-lg hover:-translate-y-1
-          ${darkMode
-                  ? 'border-gray-700 bg-gray-800 hover:border-blue-500/50'
-                  : 'border-gray-200 bg-white hover:border-blue-500/50'
-                }`}
-            >
-              <Linkedin
-                className={`mx-auto mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                size={26}
-              />
-              <h3
-                className={`font-medium mb-1 ${darkMode ? 'text-white' : 'text-gray-900'
-                  }`}
-              >
-                LinkedIn
-              </h3>
-              <p
-                className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}
-              >
-                Paul Andrei Ramos
-              </p>
-            </a>
-          </div>
-
-          {/* CTA */}
-          <a
-            href="https://mail.google.com/mail/?view=cm&to=ramospauul@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-8 py-3 rounded-lg
-        bg-blue-600 text-white font-medium
-        transition-all duration-300
-        hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Send Message
-          </a>
-        </div>
-      </section>
-
-
-      <footer
-        className={`bg-transparent border-t transition-colors duration-300
-    ${darkMode ? 'border-gray-700 bg-gray-900/30' : 'border-gray-200 bg-white/50'}
-  `}
-      >
-        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-0">
-
-          {/* Left: Branding */}
-          <div className="flex flex-col items-start">
-            <span className={`text-2xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-              {"<Paul Ramos/>"}
-            </span>
-            <p className={`mt-2 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Full-Stack Developer | Portfolio & Projects
-            </p>
-          </div>
-
-          {/* Center: Quick Links */}
-          <div className="flex flex-col md:flex-row gap-4 md:gap-8">
-            {['About', 'Projects', 'Contact', 'Resume'].map((link) => (
-              <a
-                key={link}
-                href={link === 'Resume' ? '/RESUME_RAMOS.pdf' : `#${link.toLowerCase()}`}
-                download={link === 'Resume'}
-                className={`group relative text-sm font-medium transition-colors duration-300
-            ${darkMode ? 'text-gray-300 hover:text-blue-500' : 'text-gray-700 hover:text-blue-500'}
-          `}
-              >
-                {link}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            ))}
-          </div>
-
-          {/* Right: Social Icons */}
-          <div className="flex gap-4">
-            <a
-              href="https://github.com/Paulski-damn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
-            >
-              <Github size={24} />
-            </a>
-            <a
-              href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
-            >
-              <Linkedin size={24} />
-            </a>
-            <a
-              href="mailto:ramospauul@gmail.com"
-              className={`transition-all duration-300 hover:text-blue-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
-            >
-              <Mail size={24} />
-            </a>
-          </div>
-
-        </div>
-
-        {/* Bottom copyright */}
-        <div className={`mt-8 text-center text-sm pb-4 ${darkMode ? 'text-gray-500' : 'text-gray-600'}`}>
-          © {new Date().getFullYear()} Paul Ramos. All rights reserved.
         </div>
       </footer>
-
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </div>
   );
-};
+}
 
 export default Portfolio;
