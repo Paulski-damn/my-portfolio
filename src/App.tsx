@@ -5,33 +5,6 @@ const Portfolio: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
-  // Typing effect for role
-  const roles = ["Junior Full-Stack Developer", "Computer Science Graduate"];
-  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-  const [displayedRole, setDisplayedRole] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const currentRole = roles[currentRoleIndex];
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayedRole.length < currentRole.length) {
-          setDisplayedRole(currentRole.slice(0, displayedRole.length + 1));
-        } else {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        if (displayedRole.length > 0) {
-          setDisplayedRole(currentRole.slice(0, displayedRole.length - 1));
-        } else {
-          setIsDeleting(false);
-          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-        }
-      }
-    }, isDeleting ? 50 : 100);
-    return () => clearTimeout(timeout);
-  }, [displayedRole, isDeleting, currentRoleIndex]);
-
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
@@ -91,12 +64,12 @@ const Portfolio: React.FC = () => {
       <main className="flex-1 max-w-4xl mx-auto w-full py-8 px-4 sm:px-6 relative z-10">
         {/* Hero Section */}
         <section className="mb-8">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+          <div className="flex flex-row gap-3 sm:gap-6 md:gap-8">
             {/* Profile Photo with glow effect */}
             <div className="flex-shrink-0 relative group">
               <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${darkMode ? 'bg-gradient-to-br from-white/10 via-transparent to-white/10' : 'bg-gradient-to-br from-gray-400/20 via-transparent to-gray-400/20'
                 }`} />
-              <div className={`relative w-40 h-40 md:w-44 md:h-44 rounded-2xl overflow-hidden ring-2 ${darkMode ? 'ring-white/10' : 'ring-gray-300'
+              <div className={`relative w-28 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ${darkMode ? 'ring-white/10' : 'ring-gray-300'
                 }`}>
                 <img
                   src="/formalpic.jpg"
@@ -107,80 +80,79 @@ const Portfolio: React.FC = () => {
             </div>
 
             {/* Info */}
-            <div className="flex-1">
-              {/* Name row with theme toggle */}
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-3xl md:text-4xl font-bold">Paul Ramos</h1>
-                  <BadgeCheck className="h-6 w-6 fill-blue-500 text-white" />
+            <div className="flex-1 min-w-0 flex flex-col justify-between">
+              {/* Top Section */}
+              <div>
+                {/* Name row with theme toggle */}
+                <div className="flex items-start justify-between gap-2 mb-1.5 sm:mb-3">
+                  <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+                    <h1 className="text-xl sm:text-3xl md:text-4xl font-bold truncate">Paul Ramos</h1>
+                    <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6 fill-blue-500 text-white flex-shrink-0" />
+                  </div>
+
+                  {/* Theme Toggle Switch */}
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`relative w-10 h-5 sm:w-14 sm:h-7 rounded-full transition-colors flex-shrink-0 ${darkMode ? 'bg-white/20' : 'bg-gray-300'
+                      }`}
+                  >
+                    <div className={`absolute top-0.5 left-0.5 sm:top-1 sm:left-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full transition-all duration-300 flex items-center justify-center ${darkMode ? 'translate-x-5 sm:translate-x-7 bg-white' : 'translate-x-0 bg-gray-900'
+                      }`}>
+                      {darkMode ? <Moon className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-gray-900" /> : <Sun className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-white" />}
+                    </div>
+                  </button>
                 </div>
 
-                {/* Theme Toggle Switch */}
-                <button
-                  onClick={() => setDarkMode(!darkMode)}
-                  className={`relative w-14 h-7 rounded-full transition-colors ${darkMode ? 'bg-white/20' : 'bg-gray-300'
-                    }`}
-                >
-                  <div className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-all duration-300 flex items-center justify-center ${darkMode ? 'translate-x-7 bg-white' : 'translate-x-0 bg-gray-900'
-                    }`}>
-                    {darkMode ? <Moon className="h-3 w-3 text-gray-900" /> : <Sun className="h-3 w-3 text-white" />}
-                  </div>
-                </button>
+                <div className={`flex items-center gap-1 sm:gap-2 text-xs sm:text-sm mb-1 sm:mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                  <span className="truncate">Cavite, Philippines</span>
+                </div>
+
+                {/* Role */}
+                <div className="mb-2 sm:mb-0">
+                  <p className={`text-sm sm:text-base leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Junior Full-Stack Developer</span>
+                  </p>
+                </div>
               </div>
 
-              <div className={`flex items-center gap-2 text-sm mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                <MapPin className="h-4 w-4" />
-                <span>Cavite, Philippines</span>
-              </div>
-
-              {/* Typing effect for role */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-                <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Web Developer</span>
-                  <span className="mx-2">\</span>
-                  <span className={darkMode ? 'text-white/70' : 'text-gray-700'}>
-                    {displayedRole}
-                    <span className="animate-pulse">|</span>
-                  </span>
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
+              {/* Bottom Section - Buttons */}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 mt-2 sm:mt-0">
                 <a
                   href="mailto:ramospauul@gmail.com"
-                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${darkMode
+                  className={`px-3 py-2 sm:px-6 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 ${darkMode
                     ? 'bg-white text-black hover:bg-gray-200'
                     : 'bg-gray-900 text-white hover:bg-gray-800'
                     }`}
                 >
-                  <Mail className="h-4 w-4" />
-                  Send an Email
-                  <ChevronRight className="h-4 w-4" />
+                  <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Send an Email</span>
+                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 hidden sm:inline" />
                 </a>
 
                 <a
                   href="https://linkedin.com/in/paul-andrei-ramos-81045630b/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all flex items-center gap-2 ${darkMode
+                  className={`px-3 py-2 sm:px-4 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium border transition-all flex items-center gap-1.5 sm:gap-2 ${darkMode
                     ? 'border-white/10 hover:border-white/30 hover:bg-white/5'
                     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-100'
                     }`}
                 >
-                  <Linkedin className="h-4 w-4" />
-                  Connect
+                  <Linkedin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Connect</span>
                 </a>
 
                 <a
                   href="/RESUME_RAMOS.pdf"
                   download
-                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all flex items-center gap-2 ${darkMode
+                  className={`px-3 py-2 sm:px-4 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium border transition-all flex items-center gap-1.5 sm:gap-2 ${darkMode
                     ? 'border-white/10 hover:border-white/30 hover:bg-white/5'
                     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-100'
                     }`}
                 >
-                  <Download className="h-4 w-4" />
-                  Resume
+                  <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Resume</span>
                 </a>
               </div>
             </div>
@@ -190,9 +162,9 @@ const Portfolio: React.FC = () => {
 
 
         {/* Two Column Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
           {/* Left Column - 3/5 */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="sm:col-span-3 space-y-4">
             {/* About Card */}
             <div className={`p-6 rounded-2xl border transition-colors ${darkMode
               ? 'bg-white/[0.02] border-white/10 hover:border-white/20'
@@ -274,7 +246,7 @@ const Portfolio: React.FC = () => {
           </div>
 
           {/* Right Column - 2/5 */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="sm:col-span-2 space-y-4">
             {/* Achievement Banner */}
             <div className="rounded-xl overflow-hidden">
               <div className={`relative p-5 overflow-hidden ${darkMode ? 'bg-white text-black' : 'bg-gray-900 text-white'
