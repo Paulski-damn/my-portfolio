@@ -44,7 +44,11 @@ const Portfolio: React.FC = () => {
   ];
 
   const certifications = [
-    { title: "To Follow", issuer: "To Follow" },
+    {
+      title: "Zero to Hero with GPT-3 & Python : Building Cutting-Edge AI",
+      issuer: "Arbaz Khan on Udemy",
+      file: "/AI_CERTIFICATE.pdf"
+    },
   ];
 
   return (
@@ -311,10 +315,23 @@ const Portfolio: React.FC = () => {
               </div>
               <div className="space-y-3">
                 {certifications.map((cert, index) => (
-                  <div key={index} className={`py-2 border-b last:border-0 ${darkMode ? 'border-white/10' : 'border-gray-200'
-                    }`}>
-                    <p className="text-sm font-medium">{cert.title}</p>
-                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{cert.issuer}</p>
+                  <div key={index} className={`py-2 border-b last:border-0 ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-sm sm:text-base font-medium">{cert.title}</p>
+                        <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{cert.issuer}</p>
+                      </div>
+                      {cert.file && (
+                        <a
+                          href={cert.file}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`w-full sm:w-auto text-center mt-1 sm:mt-0 px-3 py-2 rounded-md text-xs sm:text-sm font-medium border transition-all ${darkMode ? 'border-white/10 hover:border-white/30 hover:bg-white/5' : 'border-gray-300 hover:border-gray-400 hover:bg-gray-100'}`}
+                        >
+                          View
+                        </a>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
